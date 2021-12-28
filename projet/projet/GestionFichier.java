@@ -36,6 +36,11 @@ public class GestionFichier {
      * */
     public  void addOuvrage(String titre, int page, String localisation) throws ClassNotFoundException, SQLException{
 
+		/* TODO
+		    Reccupérer le fichier à l'aide de localisation
+		    Ajouter dans la Base de donnée un ouuvrage à l'aide du nom du dossier trouvé (avec titre)
+		    Ajouter les pages du dossier dans la BD
+		    */
     	ConnectionBD BD = new ConnectionBD("jdbc:mysql://localhost:3307/test", "root", "usbw");
     	Connection conn = BD.getConnection();
     	Statement stmt = conn.createStatement();
