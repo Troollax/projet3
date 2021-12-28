@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Line endX="493.0" layoutX="107.0" layoutY="45.0" startX="-107.0" />
+      <Text layoutX="281.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Editer" underline="true">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Text>
+      <Text layoutX="41.0" layoutY="104.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Entrez l'Id de l'ouvrage que vous souhaitez modifier :" />
+      <Text layoutX="350.0" layoutY="104.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Id" />
+      <TextField layoutX="367.0" layoutY="87.0" prefHeight="25.0" prefWidth="52.0" />
+      <Text layoutX="41.0" layoutY="164.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Renseignez ses nouvelles caractéristiques :" />
+      <Text layoutX="47.0" layoutY="205.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Id" />
+      <Text layoutX="45.0" layoutY="244.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Titre" />
+      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
+      <Text layoutX="41.0" layoutY="282.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Auteur" />
+      <TextField layoutX="79.0" layoutY="188.0" />
+      <TextField layoutX="79.0" layoutY="227.0" />
+      <TextField layoutX="79.0" layoutY="265.0" />
+   </children>
+</AnchorPane>

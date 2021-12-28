@@ -1,25 +1,27 @@
 package Projet_L2;
 
 
-
-
-
 import java.io.IOException;
+
+import java.io.OutputStream;
+import java.io.PrintStream;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+
 import javafx.application.Application;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
-import javafx.scene.Parent;
+
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
+
+
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+
 import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableView;
 import javafx.scene.control.cell.TreeItemPropertyValueFactory;
@@ -31,38 +33,64 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 
+
 public class LaunchPage extends Application{
 	
 	
 	
 
 	public static void main(String[] args) {
+		
         Application.launch(args);
+       
     }
 
 	 @Override
 	 public void start(Stage stage) throws Exception {
-	
+		 
+		 	
+
+	        
+	    
+
+	        
 		 
 		stage.setTitle("Bienvenue");		 
 		BorderPane root1 = new BorderPane();
-		Scene sc = new Scene (root1, 800, 400);		 
+		Scene sc = new Scene (root1, 800, 450);		 
 		stage.setScene(sc);
 		
-		//console
+		
 		HBox hbox = new HBox();
 		hbox.setPadding(new Insets(10));
 		hbox.setSpacing(5);
 		
-		TextArea Console = new TextArea();
-		Console.setPrefWidth(800);
-		Console.setPrefHeight(50);
-		hbox.getChildren().addAll(Console);
+		//console
+			TextArea ta = new TextArea();
+			ta. setPrefHeight(100); 
+			ta. setPrefWidth(800); 
+			
+		
+		 
+	    	ta.setEditable(false);
+	        Console console = new Console(ta);
+	        PrintStream ps = new PrintStream(console, true);
+	        System.setOut(ps);
+	        System.setErr(ps);
+	        Scene app = new Scene(ta);
+	        hbox.getChildren().addAll(ta);
+	        
+	        
+	        for (char c : "Bienvenue dans notre projet".toCharArray()) {
+	            console.write(c);
+	        }
+	        ps.close();
+	
 		//Tableau
         TreeTableView<Ouvrage> Tableau = new TreeTableView<Ouvrage>();
 
         	//Colonne Titre
-        	TreeTableColumn<Ouvrage, String> Titre = new TreeTableColumn<Ouvrage, String>("Titres");
+        	TreeTableColumn<Ouvrage, String> Titre = new TreeTableColumn<Ouvrage, String>("Titre");
 
         	//Colonne Auteur
         	TreeTableColumn<Ouvrage, String> Auteur = new TreeTableColumn<Ouvrage, String>("Auteur");
@@ -131,15 +159,104 @@ public class LaunchPage extends Application{
 		       
 		        Scene scene = new Scene(fxmlLoader.load(), 600, 400);
 		        Stage stage1 = new Stage();
-		        stage1.setTitle("New Window");
+		        stage1.setTitle("Ajouter");
 		        stage1.setScene(scene);
 		        stage1.show();
 		    } catch (IOException e) {
 		        Logger logger = Logger.getLogger(getClass().getName());
 		        logger.log(Level.SEVERE, "Failed to create new Window.", e);
 		    }
+		    
+		    for (char c : "\nOuverture de l'interface d'Ajouts".toCharArray()) {
+	            try {
+					console.write(c);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+	        }
+	        ps.close();
+	
 		});
 		
+		
+		
+		//Permet d'ouvrir l'interface Supprimer
+				btn_Supprimer.setOnMouseClicked((event) -> {
+				    try {
+				        FXMLLoader fxmlLoader = new FXMLLoader();
+				        fxmlLoader.setLocation(getClass().getResource("Supprimer.fxml"));
+				       
+				        Scene scene = new Scene(fxmlLoader.load(), 600, 400);
+				        Stage stage1 = new Stage();
+				        stage1.setTitle("New Window");
+				        stage1.setScene(scene);
+				        stage1.show();
+				    } catch (IOException e) {
+				        Logger logger = Logger.getLogger(getClass().getName());
+				        logger.log(Level.SEVERE, "Failed to create new Window.", e);
+				    }
+			 
+				    for (char c : "\nOuverture de l'interface de Suppression".toCharArray()) {
+			            try {
+							console.write(c);
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+			        }
+			        ps.close();
+				});
+		
+				//Permet d'ouvrir l'interface Editer
+				btn_Editer.setOnMouseClicked((event) -> {
+				    try {
+				        FXMLLoader fxmlLoader = new FXMLLoader();
+				        fxmlLoader.setLocation(getClass().getResource("Editer.fxml"));
+				       
+				        Scene scene = new Scene(fxmlLoader.load(), 600, 400);
+				        Stage stage1 = new Stage();
+				        stage1.setTitle("New Window");
+				        stage1.setScene(scene);
+				        stage1.show();
+				    } catch (IOException e) {
+				        Logger logger = Logger.getLogger(getClass().getName());
+				        logger.log(Level.SEVERE, "Failed to create new Window.", e);
+				    }
+			 
+				    for (char c : "\nOuverture de l'interface d'Editage".toCharArray()) {
+			            try {
+							console.write(c);
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+			        }
+			        ps.close();
+				});
+		
+				//Permet d'ouvrir l'interface Ouvrir
+				btn_Ouvrir.setOnMouseClicked((event) -> {
+				    try {
+				        FXMLLoader fxmlLoader = new FXMLLoader();
+				        fxmlLoader.setLocation(getClass().getResource("Ouvrir.fxml"));
+				       
+				        Scene scene = new Scene(fxmlLoader.load(), 600, 400);
+				        Stage stage1 = new Stage();
+				        stage1.setTitle("New Window");
+				        stage1.setScene(scene);
+				        stage1.show();
+				    } catch (IOException e) {
+				        Logger logger = Logger.getLogger(getClass().getName());
+				        logger.log(Level.SEVERE, "Failed to create new Window.", e);
+				    }
+			 
+				    for (char c : "\nOuverture de l'interface d'Ouverture".toCharArray()) {
+			            try {
+							console.write(c);
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+			        }
+			        ps.close();
+				});
 		
 		
 		//Permet d'ouvrir l'interface Galerie
@@ -158,12 +275,44 @@ public class LaunchPage extends Application{
 		        logger.log(Level.SEVERE, "Failed to create new Window.", e);
 		    }
 	 
-	 
+		    for (char c : "\nOuverture de la Galerie".toCharArray()) {
+	            try {
+					console.write(c);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+	        }
+	        ps.close();
 		});
 	 
-	 
 	 }
+		//écrit dans le TextArea, à la manière d'une console
+	 	public static class Console extends OutputStream {
+
+	        private TextArea output;
+
+	        public Console(TextArea ta) {
+	            this.output = ta;
+	        }
+
+	        @Override
+	        public void write(int i) throws IOException {
+	            output.appendText(String.valueOf((char) i));
+	        }
+	    }
+	 	
+	 	
+	 	
+	 	
+	 	    @FXML
+	 	    private static void test(ActionEvent event)
+	 	    {
+	 	        System.out.println("lollolol");
+	 	    } 
+	 	   
 }
+	
+
 	 
 
 
