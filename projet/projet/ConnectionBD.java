@@ -54,7 +54,7 @@ public class ConnectionBD {
      * @return ArrayList<Img>
      */
     public void getOuvrageByTitre(String titre) {
-
+    		
     }
 
     /**
@@ -93,18 +93,50 @@ public class ConnectionBD {
      * Cette méthode crée un ouvrage dans la base de donnée par le biais d'un objet Ouvrage.
      * @param ouvrage
      * @return void
+     * @throws SQLException 
      */
-    public void createOuvrage(Ouvrage ouvrage) {
-
+    public void createOuvrage(Ouvrage ouvrage) throws SQLException {
+    	Statement statement = connection.createStatement();
+    	if (exist(ouvrage)) {
+			System.out.println("L'ouvrage existe déjà dans la Base.");
+		}else {
+			String sql = "INSERT INTO OUVRAGE VALUES ( , "+ ouvrage.getTitre()+ ouvrage.getNbPage() +")";
+			ResultSet resultSet = statement.executeQuery(sql);
+			
+		}
+    	
+    	
     }
 
     /**
      * Cette méthode supprime un ouvrage dans la base de donnée par le biais d'un objet Ouvrage.
      * @param ouvrage
      * @return void
+     * @throws SQLException 
      * */
-    public void deleteOuvrage(Ouvrage ouvrage){
-
+    public void deleteOuvrage(Ouvrage ouvrage) throws SQLException{
+    	
+		Statement stmt = connection.createStatement();
+		String sql = "DELETE FROM ouvrages WHERE Titre=" + ouvrage.getTitre() + "";
+		int rs = stmt.executeUpdate(sql);
+    }
+    
+    /**
+     * Cette méthode permettra de savoir si un ouvrage et déjà existant dans la base de donnée pour éviter tout soucis.
+     * Elle se sert du titre de l'ouvrage pour le retrouver.
+     * @param Ouvrage
+     * @return Boolean
+     * @throws SQLException 
+     * */
+    
+    public boolean exist(Ouvrage ouvrage) throws SQLException {
+    	Statement statement = connection.createStatement();
+    	String checkString = "SELECT * FROM OUVRAGE WHERE Titre = " + ouvrage.getTitre();
+    	ResultSet resultSet = statement.executeQuery(password);
+    	if (resultSet.next()) {
+			return true;
+		}
+    	return false;
     }
 
 }

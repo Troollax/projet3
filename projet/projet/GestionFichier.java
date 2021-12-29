@@ -53,14 +53,14 @@ public class GestionFichier {
 	 * Cette méthode permet de supprimer un ouvrage du répertoire local ET de la
 	 * base de donnée.
 	 * 
-	 * @param titre
+	 * @param Ouvrage
 	 * @throws SQLException
 	 * @throws ClassNotFoundException
 	 */
-	public void removeOuvrage(String titre) throws ClassNotFoundException, SQLException {
+	public void removeOuvrage(Ouvrage ouvrage) throws ClassNotFoundException, SQLException {
 
 		ConnectionBD BD = new ConnectionBD("jdbc:mysql://localhost:3307/test", "root", "usbw");
-		
+		BD.deleteOuvrage(ouvrage);
 		//TODO PARTIE REPERTOIRE
 	}
 
