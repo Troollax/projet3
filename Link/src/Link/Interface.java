@@ -53,8 +53,8 @@ public class Interface extends Application{
 	    	Ouvrage ou = new Ouvrage("'Labelle'", "'bodelaire'", "'12/20/20021'", null, 5);
 
 	    	BD.createOuvrage(ou);
-	    	BD.updateOuvrage(ou, "'NewName'", 20);
-	    	BD.getOuvrageByTitre("'test'");
+	    	BD.updateOuvrage(ou);
+	    	BD.getPagesByTitre("'test'");
 
 		stage.setTitle("Bienvenue");		 
 		BorderPane root1 = new BorderPane();

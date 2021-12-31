@@ -1,3 +1,4 @@
+package Link;
 
 import java.awt.Image;
 import java.sql.Connection;
@@ -17,8 +18,8 @@ import java.util.ArrayList;
  *         caractères</li>
  *         <li>Le nom d'utilisateur ainsi que le mot de passe qui permet de se
  *         connecter</li>
- *         <li>Un objet Connection qui permettra via le constructeur de crée une
- *         connection avec la Base de donnée</li>
+ *         <li>Un objet Connection qui permettra via le constructeur de crée
+ *         une connection avec la Base de donnée</li>
  *         </ul>
  */
 public class ConnectionBD {
@@ -36,6 +37,20 @@ public class ConnectionBD {
 	private String password;
 	private Connection connection;
 
+	// JUSTE UN TEST
+	public static void main(String[] args) throws ClassNotFoundException, SQLException {
+		System.out.println("Debut du test ! \n");
+		String url = "jdbc:mysql://localhost:3307/test?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
+		ConnectionBD BD = new ConnectionBD(url, "root", "usbw");
+		System.out.println("Connection r�ussi ! \n");
+		Ouvrage ou = new Ouvrage("Labelle", "bodelaire", "2021-12-24", null, 5);
+		System.out.println("Cr�ation de l'ouvrage. \n");
+		BD.createOuvrage(ou);
+		System.out.println("L'ouvrage existe :" + BD.exist(ou) + "\n");
+		BD.deleteOuvrage(ou);
+		System.out.println("L'ouvrage existe :" + BD.exist(ou));
+	}
+
 	/**
 	 * Le constructeur de la classe.
 	 *
@@ -46,6 +61,7 @@ public class ConnectionBD {
 		this.url = url;
 		this.username = username;
 		this.password = password;
+		Class.forName("com.mysql.cj.jdbc.Driver");
 		this.connection = DriverManager.getConnection(url, username, password);
 	}
 
@@ -72,8 +88,8 @@ public class ConnectionBD {
 	}
 
 	/**
-	 * Cette méthode permet de trouver des ouvrages par le biais d'un. On récupère
-	 * ensuite les titres de ses ouvrages.
+	 * Cette méthode permet de trouver des ouvrages par le biais d'un. On
+	 * récupère ensuite les titres de ses ouvrages.
 	 *
 	 * @param tag
 	 * @return
@@ -114,8 +130,8 @@ public class ConnectionBD {
 	}
 
 	/**
-	 * Cette méthode permet d'actualiser un ouvrage dans la base de donnée à partir
-	 * de l'emplacement de l'ouvrage modifié.
+	 * Cette méthode permet d'actualiser un ouvrage dans la base de donnée à
+	 * partir de l'emplacement de l'ouvrage modifié.
 	 *
 	 * @param titre,args
 	 * @return void
@@ -135,8 +151,8 @@ public class ConnectionBD {
 	}
 
 	/**
-	 * Cette méthode crée un ouvrage dans la base de donnée par le biais d'un objet
-	 * Ouvrage.
+	 * Cette méthode crée un ouvrage dans la base de donnée par le biais d'un
+	 * objet Ouvrage.
 	 * 
 	 * @param ouvrage
 	 * @return void
@@ -172,9 +188,9 @@ public class ConnectionBD {
 	}
 
 	/**
-	 * Cette méthode permettra de savoir si un ouvrage et déjà existant dans la base
-	 * de donnée pour éviter tout soucis. Elle se sert du titre de l'ouvrage pour le
-	 * retrouver.
+	 * Cette méthode permettra de savoir si un ouvrage et déjà existant dans la
+	 * base de donnée pour éviter tout soucis. Elle se sert du titre de l'ouvrage
+	 * pour le retrouver.
 	 * 
 	 * @param Ouvrage
 	 * @return Boolean
