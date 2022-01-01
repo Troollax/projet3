@@ -32,23 +32,23 @@ public class ConnectionBD {
 		this.connection = connection;
 	}
 
-	private String url;
-	private String username;
-	private String password;
+	private final String url = "jdbc:mysql://localhost:3307/test?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
+	private final String username = "root";
+	private final String password = "usbw";
 	private Connection connection;
 
 	// JUSTE UN TEST
 	public static void main(String[] args) throws ClassNotFoundException, SQLException {
 		System.out.println("Debut du test ! \n");
-		String url = "jdbc:mysql://localhost:3307/test?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
-		ConnectionBD BD = new ConnectionBD(url, "root", "usbw");
-		System.out.println("Connection réussi ! \n");
+		ConnectionBD BD = new ConnectionBD();
+		System.out.println("Connection rÃ©ussi ! \n");
 		Ouvrage ou = new Ouvrage("Labelle", "bodelaire", "2021-12-24", null, 5);
-		System.out.println("Création de l'ouvrage. \n");
+		System.out.println("CrÃ©ation de l'ouvrage. \n");
 		BD.createOuvrage(ou);
-		System.out.println("L'ouvrage existe :" + BD.exist(ou) + "\n");
+		System.out.println("L'ouvrage existe : " + BD.exist(ou) + ".\n");
 		BD.deleteOuvrage(ou);
-		System.out.println("L'ouvrage existe :" + BD.exist(ou));
+		System.out.println("Destruction de l'ouvrage. \n");
+		System.out.println("L'ouvrage existe : " + BD.exist(ou) + ".\n");
 	}
 
 	/**
@@ -57,10 +57,7 @@ public class ConnectionBD {
 	 * @param url,username,password
 	 * @throws SQLException,ClassNotFoundException
 	 */
-	public ConnectionBD(String url, String username, String password) throws SQLException, ClassNotFoundException {
-		this.url = url;
-		this.username = username;
-		this.password = password;
+	public ConnectionBD() throws SQLException, ClassNotFoundException {
 		Class.forName("com.mysql.cj.jdbc.Driver");
 		this.connection = DriverManager.getConnection(url, username, password);
 	}

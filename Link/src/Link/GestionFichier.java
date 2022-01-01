@@ -60,7 +60,7 @@ public class GestionFichier {
 	 */
 	public void removeOuvrage(Ouvrage ouvrage) throws ClassNotFoundException, SQLException {
 
-		ConnectionBD BD = new ConnectionBD("jdbc:mysql://localhost:3307/test", "root", "usbw");
+		ConnectionBD BD = new ConnectionBD();
 		BD.deleteOuvrage(ouvrage);
 		//TODO PARTIE REPERTOIRE
 	}
@@ -76,7 +76,7 @@ public class GestionFichier {
 	public void addPage(Ouvrage ouvrage, int numPage, Image page, String cc)
 			throws ClassNotFoundException, SQLException {
 
-		ConnectionBD BD = new ConnectionBD("jdbc:mysql://localhost:3307/test", "root", "usbw");
+		ConnectionBD BD = new ConnectionBD();
 		Connection conn = BD.getConnection();
 		Statement stmt = conn.createStatement();
 		String sql = "INSERT INTO pages VALUES (" + numPage + ", " + cc + ", " + ouvrage.getTitre() + ")";
@@ -95,7 +95,7 @@ public class GestionFichier {
 	 */
 	public void removePage(String titre, int nbPage) throws ClassNotFoundException, SQLException {
 
-		ConnectionBD BD = new ConnectionBD("jdbc:mysql://localhost:3307/test", "root", "usbw");
+		ConnectionBD BD = new ConnectionBD();
 		Connection conn = BD.getConnection();
 		Statement stmt = conn.createStatement();
 		String sql = "DELETE FROM pages WHERE titreouvrage=" + titre + "";
