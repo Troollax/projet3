@@ -1,6 +1,9 @@
 package Link;
 
 import java.awt.Image;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.Connection;
 
 import java.sql.DriverManager;
@@ -10,6 +13,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
+import com.mysql.cj.result.BinaryStreamValueFactory;
+
 /**
  * @author Belkalai Mohamed, Bigot Loic, Louison Boutet Cette classe s'occupera
  *         des interactions avec la base de donnée. Elle contient en attribut :
@@ -18,8 +23,8 @@ import java.util.ArrayList;
  *         caractères</li>
  *         <li>Le nom d'utilisateur ainsi que le mot de passe qui permet de se
  *         connecter</li>
- *         <li>Un objet Connection qui permettra via le constructeur de crée
- *         une connection avec la Base de donnée</li>
+ *         <li>Un objet Connection qui permettra via le constructeur de crée une
+ *         connection avec la Base de donnée</li>
  *         </ul>
  */
 public class ConnectionBD {
@@ -85,8 +90,8 @@ public class ConnectionBD {
 	}
 
 	/**
-	 * Cette méthode permet de trouver des ouvrages par le biais d'un. On
-	 * récupère ensuite les titres de ses ouvrages.
+	 * Cette méthode permet de trouver des ouvrages par le biais d'un. On récupère
+	 * ensuite les titres de ses ouvrages.
 	 *
 	 * @param tag
 	 * @return
@@ -127,8 +132,8 @@ public class ConnectionBD {
 	}
 
 	/**
-	 * Cette méthode permet d'actualiser un ouvrage dans la base de donnée à
-	 * partir de l'emplacement de l'ouvrage modifié.
+	 * Cette méthode permet d'actualiser un ouvrage dans la base de donnée à partir
+	 * de l'emplacement de l'ouvrage modifié.
 	 *
 	 * @param titre,args
 	 * @return void
@@ -148,8 +153,8 @@ public class ConnectionBD {
 	}
 
 	/**
-	 * Cette méthode crée un ouvrage dans la base de donnée par le biais d'un
-	 * objet Ouvrage.
+	 * Cette méthode crée un ouvrage dans la base de donnée par le biais d'un objet
+	 * Ouvrage.
 	 * 
 	 * @param ouvrage
 	 * @return void
@@ -185,9 +190,34 @@ public class ConnectionBD {
 	}
 
 	/**
-	 * Cette méthode permettra de savoir si un ouvrage et déjà existant dans la
-	 * base de donnée pour éviter tout soucis. Elle se sert du titre de l'ouvrage
-	 * pour le retrouver.
+	 * Cette méthode ajoute une page d'un ouvrage dans la BDD. Cette méthode sera
+	 * appeler autant de fois que nécessaire lors de la création ou l'édition d'un
+	 * ouvrage.
+	 * 
+	 * @param page,ouvrage
+	 * @throws SQLException
+	 * @throws IOException
+	 * 
+	 */
+	public void ajoutPage(File page, int numPage, Ouvrage ouvrage) throws SQLException, IOException {
+		// Ajout de la page dans la BDD
+		FileInputStream image = new FileInputStream(page);
+		String sqlAjout = "INSERT INTO `pages`(`Id_Pages`, `NumPages`, `ImgPages`) " + "VALUES ("
+				+ page.getAbsolutePath() + "," + numPage + ",?)";
+		PreparedStatement preparedStatement = connection.prepareStatement(sqlAjout);
+		preparedStatement.setBinaryStream(2, image, image.available());
+		preparedStatement.executeUpdate();
+
+		// Liens entre la page et l'ouvrage
+		String sqlLien = "INSERT INTO `a`(`Id_Ouvrage`,`Id_Pages`) "
+				+ "VALUES ((SELECT Id_Ouvrage FROM `ouvrage` WHERE titre LIKE '" + ouvrage.getTitre() + "') ," + " `"
+				+ page.getAbsolutePath() + "` )";
+	}
+
+	/**
+	 * Cette méthode permettra de savoir si un ouvrage et déjà existant dans la base
+	 * de donnée pour éviter tout soucis. Elle se sert du titre de l'ouvrage pour le
+	 * retrouver.
 	 * 
 	 * @param Ouvrage
 	 * @return Boolean

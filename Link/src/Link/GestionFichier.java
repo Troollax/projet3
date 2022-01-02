@@ -3,10 +3,25 @@ package Link;
 // IMPORT ???
 
 import java.awt.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Iterator;
+
+import javax.xml.transform.Source;
+
+import javafx.scene.image.*;
+import javafx.scene.image.Image;
 
 /**
  * @author Belkalai Mohamed, Bigot Loic, Boutet Louison Cette classe fera toutes
@@ -29,25 +44,55 @@ public class GestionFichier {
 	 * dans un répertoire local et ensuite crée dans le répertoire de l'application
 	 * (REPERTOIRE).
 	 * 
-	 * @param <VarChar>
 	 * @param titre,localisation
 	 * @throws SQLException
 	 * @throws ClassNotFoundException
+	 * @throws IOException 
 	 */
-	public void addOuvrage(String titre, int page, String localisation) throws ClassNotFoundException, SQLException {
+	public void addOuvrage(Ouvrage ouvrage, String localisation)
+			throws ClassNotFoundException, SQLException, IOException {
 
 		/*
 		 * TODO Reccupérer le fichier à l'aide de localisation Ajouter dans la Base de
 		 * donnée un ouuvrage à l'aide du nom du dossier trouvé (avec titre) Ajouter les
 		 * pages du dossier dans la BD
 		 */
-		/*
-		 * ConnectionBD BD = new ConnectionBD("jdbc:mysql://localhost:3307/test",
-		 * "root", "usbw"); Connection conn = BD.getConnection(); Statement stmt =
-		 * conn.createStatement(); String sql =
-		 * "INSERT INTO ouvrages VALUES ("+page+", "+titre+")"; int rs =
-		 * stmt.executeUpdate(sql);
-		 */
+
+		// Création de l'ouvrage dans le répertoire
+		int counterFichier = 0;
+		int counterImage = 1;
+		String titre = ouvrage.getTitre();
+		try {
+
+			// Variables des chemins
+			Path sourcePath = Paths.get(localisation + titre);
+			Path outputPath = Paths.get(REPERTOIRE + titre);
+			// Création du dossier dans REPERTOIRE
+			Files.createDirectories(outputPath);
+			File sourceFolder = new File(localisation + titre);
+
+			for (File sourceFile : sourceFolder.listFiles()) {
+				// Création d'un chemin avec le nom de l'image
+				Path target = outputPath.resolve(sourcePath.getFileName());
+				Files.copy(sourcePath, target, StandardCopyOption.REPLACE_EXISTING);
+				counterFichier++;
+			}
+			System.out.println(counterFichier + " fichier on était copié !");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		// Ajout de l'ouvrage dans la BDD
+		ConnectionBD connectionBD = new ConnectionBD();
+		connectionBD.createOuvrage(ouvrage);
+
+		// Ajout des images dans le répertoire
+		File folder = new File(REPERTOIRE + titre);
+
+		for (File image : folder.listFiles()) {
+			connectionBD.ajoutPage(image, counterImage, ouvrage);
+			counterImage++;
+		}
 	}
 
 	/**
@@ -62,7 +107,7 @@ public class GestionFichier {
 
 		ConnectionBD BD = new ConnectionBD();
 		BD.deleteOuvrage(ouvrage);
-		//TODO PARTIE REPERTOIRE
+		// TODO PARTIE REPERTOIRE
 	}
 
 	/**
