@@ -1,6 +1,5 @@
 package Link;
 
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -11,9 +10,9 @@ import java.sql.SQLException;
 import javafx.scene.image.Image;
 
 /**
- * @author Belkalai Mohamed, Bigot Loic, Boutet Louison Cette classe fera toutes
- *         les opérations de traitement des données. Elle sera liée à la base de
- *         donnée et permettra entre autre :
+ * @author Belkalai Mohamed, Bigot Loic, Boutet Louison. Cette classe fera
+ *         toutes les opérations de traitement des données. Elle sera liée à la
+ *         base de donnée et permettra entre autre :
  *         <ul>
  *         <li>d'ajouter des ouvrages à partir du répertoire local</li>
  *         <li>de procéder au traitement des Composantes Connexes</li>
@@ -87,7 +86,8 @@ public class GestionFichier {
 
 		ConnectionBD BD = new ConnectionBD();
 		BD.deleteOuvrage(ouvrage);
-		// TODO PARTIE REPERTOIRE
+		File dossier = new File(REPERTOIRE + ouvrage.getTitre());
+		dossier.deleteOnExit();
 	}
 
 	/**
@@ -109,6 +109,23 @@ public class GestionFichier {
 	}
 
 	/**
+	 * Cette méthode modifie un ouvrage présent dans le repertoire. Il se sert de la
+	 * base de donnée pour actualiser en local.
+	 * 
+	 * @param ouvrage
+	 * @throws SQLException
+	 * @throws ClassNotFoundException
+	 */
+	public void updateOuvragre(Ouvrage ouvrage) throws ClassNotFoundException, SQLException {
+		File dossier = new File(REPERTOIRE + ouvrage.getTitre());
+		ConnectionBD connectionBD = new ConnectionBD();
+		connectionBD.getPagesByTitre("titre");
+		// TODO Vider completement le dossier ouvrage avec un boucle, puis ajouter les
+		// pages depuis la BDD
+
+	}
+
+	/**
 	 * Cette méthode supprime une page d'un ouvrage dans le répertoire local et dans
 	 * la base de donnée.
 	 * 
@@ -127,7 +144,6 @@ public class GestionFichier {
 			}
 			counter++;
 		}
-		
 
 	}
 

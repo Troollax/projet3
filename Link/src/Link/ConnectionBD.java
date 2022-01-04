@@ -68,7 +68,9 @@ public class ConnectionBD {
 		Class.forName("com.mysql.cj.jdbc.Driver");
 		this.connection = DriverManager.getConnection(url, username, password);
 	}
-
+	
+	//TODO A FAIRE EN PREMIER (pour updateOuvrage) !
+	 
 	/**
 	 * Cette méthode permet de trouver un ouvrage par le biais de son titre. On
 	 * récupère ensuite les pages de l'ouvrage.
@@ -82,7 +84,7 @@ public class ConnectionBD {
 		ArrayList<Image> ouvrage = new ArrayList<>();
 		Statement statement = connection.createStatement();
 
-		// TODO SQL à finir !!
+		// TODO SQL à finir !! 
 		String sql = "";
 		ResultSet resultSet = statement.executeQuery(sql);
 		for (int i = 0; i < resultSet.getFetchSize(); i++) {
@@ -138,15 +140,13 @@ public class ConnectionBD {
 	 * de l'emplacement de l'ouvrage modifié.
 	 *
 	 * @param titre,args
-	 * @return void
 	 * @throws SQLException
 	 */
 	public void updateOuvrage(Ouvrage ouvrage) throws SQLException {
 		if (exist(ouvrage)) {
 			Statement statement = connection.createStatement();
-			String sql = "UPDATE `ouvrage` SET `DateDeParution`="
-					+ ouvrage.getDate() + ",`Auteur`" + ouvrage.getAuteur() + " WHERE Titre LIKE '" + ouvrage.getTitre()
-					+ "'";
+			String sql = "UPDATE `ouvrage` SET `DateDeParution`=" + ouvrage.getDate() + ",`Auteur`"
+					+ ouvrage.getAuteur() + " WHERE Titre LIKE '" + ouvrage.getTitre() + "'";
 			statement.executeUpdate(sql);
 		} else {
 			System.out.println("L'ouvrage en question n'existe pas.");
@@ -159,7 +159,6 @@ public class ConnectionBD {
 	 * Ouvrage.
 	 * 
 	 * @param ouvrage
-	 * @return void
 	 * @throws SQLException
 	 */
 	public void createOuvrage(Ouvrage ouvrage) throws SQLException {
@@ -168,8 +167,7 @@ public class ConnectionBD {
 			System.out.println("L'ouvrage existe déjà dans la Base.");
 		} else {
 			String sql = "INSERT INTO `test`.`ouvrage` (`Titre`, `DateDeParution`, `Auteur`) VALUES (" + " '"
-					+ ouvrage.getTitre() + "', '" + ouvrage.getDate() + "', '"
-					+ ouvrage.getAuteur() + "');";
+					+ ouvrage.getTitre() + "', '" + ouvrage.getDate() + "', '" + ouvrage.getAuteur() + "');";
 			statement.executeUpdate(sql);
 
 		}
@@ -192,9 +190,9 @@ public class ConnectionBD {
 	}
 
 	/**
-	 * Cette méthode ajoute une page d'un ouvrage dans la base de donnée. Cette méthode sera
-	 * appeler autant de fois que nécessaire lors de la création ou l'édition d'un
-	 * ouvrage.
+	 * Cette méthode ajoute une page d'un ouvrage dans la base de donnée. Cette
+	 * méthode sera appeler autant de fois que nécessaire lors de la création ou
+	 * l'édition d'un ouvrage.
 	 * 
 	 * @param page,numPage,ouvrage
 	 * @throws SQLException
@@ -215,14 +213,15 @@ public class ConnectionBD {
 				+ "VALUES ((SELECT Id_Ouvrage FROM `ouvrage` WHERE titre LIKE '" + ouvrage.getTitre() + "') ," + " `"
 				+ page.getAbsolutePath() + "` )";
 	}
-	
+
 	/**
 	 * Cette méthode supprime une page d'un ouvrage dans la base de donnée.
+	 * 
 	 * @param File
-	 * @throws SQLException 
+	 * @throws SQLException
 	 **/
 	public void deletePage(File image) throws SQLException {
-		String sql = "DELETE FROM page WHERE Id_Page LIKE '%"+image.getAbsolutePath()+"%'";
+		String sql = "DELETE FROM page WHERE Id_Page LIKE '%" + image.getAbsolutePath() + "%'";
 		Statement statement = connection.createStatement();
 		statement.executeUpdate(sql);
 	}
