@@ -98,14 +98,14 @@ public class interfaceFX extends Application{
 
         	//Colonne Auteur
         	TreeTableColumn<Ouvrage, String> Auteur = new TreeTableColumn<Ouvrage, String>("Auteur");
-        	TreeTableColumn<Ouvrage, String> PrenomAuteur  = new TreeTableColumn<Ouvrage, String>("Prénom");
+        	TreeTableColumn<Ouvrage, String> PrenomAuteur  = new TreeTableColumn<Ouvrage, String>("Prï¿½nom");
         	TreeTableColumn<Ouvrage, String> NomAuteur  = new TreeTableColumn<Ouvrage, String>("Nom");
         	Auteur.getColumns().addAll(PrenomAuteur, NomAuteur);
         	
         	//Colonne Nombre de mots
         	TreeTableColumn<Ouvrage, String> NbreMots = new TreeTableColumn<Ouvrage, String>("Nombre de mots");
  
-        //Définit comment aller chercher la valeur des attributs dans la classe Ouvrage
+        //Dï¿½finit comment aller chercher la valeur des attributs dans la classe Ouvrage
         Titre.setCellValueFactory(new TreeItemPropertyValueFactory<Ouvrage, String>("titre"));
         PrenomAuteur.setCellValueFactory(new TreeItemPropertyValueFactory<Ouvrage, String>("prenom"));
         NomAuteur.setCellValueFactory(new TreeItemPropertyValueFactory<Ouvrage, String>("nom"));
@@ -115,9 +115,9 @@ public class interfaceFX extends Application{
         Tableau.getColumns().addAll(Titre, Auteur,NbreMots);
 
         //Informations
-        Ouvrage un = new Ouvrage("Le petit Prince", "Antoine" , "de Saint Exuperry", null, 25000);
-        Ouvrage deux = new Ouvrage("L'Avare", "Molière" , " ", null, 40000);
-        Ouvrage trois = new Ouvrage("Le Rouge et le Noir", "Stendhal" , " ", null, 132456);
+        Ouvrage un = new Ouvrage("Le petit Prince", "Antoine" , "de Saint Exuperry", null);
+        Ouvrage deux = new Ouvrage("L'Avare", "Moliï¿½re" , " ", null);
+        Ouvrage trois = new Ouvrage("Le Rouge et le Noir", "Stendhal" , " ", null);
            
 
         //Root Item
@@ -139,7 +139,7 @@ public class interfaceFX extends Application{
 		vbox2.setPadding(new Insets(10));
 		vbox2.setSpacing(40);
 		
-			//Boutons présents dans la barre
+			//Boutons prï¿½sents dans la barre
 			Button btn_Ouvrir = new Button("Ouvrir");
 			Button btn_Ajouter = new Button("Ajouter");
 			Button btn_Supprimer = new Button("Supprimer");
@@ -148,7 +148,7 @@ public class interfaceFX extends Application{
 			
 			vbox2.getChildren().addAll(btn_Ouvrir,btn_Ajouter, btn_Supprimer, btn_Editer, btn_Galerie);		
 		
-		//Positionnement des éléments
+		//Positionnement des ï¿½lï¿½ments
 		root1.setTop(hbox);
 		root1.setRight(vbox2);
 		root1.setCenter(Tableau);

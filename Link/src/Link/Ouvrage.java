@@ -19,8 +19,6 @@ public class Ouvrage {
 	private String auteur = "inconnu";
 	private String date = "inconnu";
 	private ArrayList<String> tag;
-	private int nbPage = 0;
-
 	/**
 	 * C'est le constructeur de cette classe. Il représente la création d'un
 	 * ouvrage.
@@ -29,14 +27,13 @@ public class Ouvrage {
 	 * @param auteur
 	 * @param date   en Année
 	 * @param tag
-	 * @param nbPage
 	 */
-	public Ouvrage(String titre, String auteur, String date, ArrayList<String> tag, int nbPage) {
+	public Ouvrage(String titre, String auteur, String date, ArrayList<String> tag) {
 		this.titre = titre;
 		this.auteur = auteur;
 		this.date = date;
 		this.tag = tag;
-		this.nbPage = nbPage;
+
 	} 
 
 	// GETTER
@@ -56,10 +53,6 @@ public class Ouvrage {
 		return tag;
 	}
 
-	public int getNbPage() {
-		return nbPage;
-	}
-
 	/**
 	 * Cette méthode permet de modifier les tags d'un ouvrage.
 	 * <ul>
@@ -74,7 +67,5 @@ public class Ouvrage {
 
 	}
 
-	public void setNbPage(int nbPage) {
-		this.nbPage = nbPage;
-	}
+
 }

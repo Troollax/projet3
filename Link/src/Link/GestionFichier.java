@@ -1,26 +1,13 @@
 package Link;
 
-// IMPORT ???
 
-import java.awt.*;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Iterator;
-
-import javax.xml.transform.Source;
-
-import javafx.scene.image.*;
 import javafx.scene.image.Image;
 
 /**
@@ -31,13 +18,12 @@ import javafx.scene.image.Image;
  *         <li>d'ajouter des ouvrages à partir du répertoire local</li>
  *         <li>de procéder au traitement des Composantes Connexes</li>
  *         </ul>
- *
+ * 
  */
 
 public class GestionFichier {
 
-	private final String REPERTOIRE = "A COMPLETE PAR LA SUITE";
-	private ArrayList<String> titreOuvrage;
+	private final String REPERTOIRE = "/Ouvrages/";
 
 	/**
 	 * Cette méthode permet d'ajouter un ouvrage dans la BDD. L'ouvrage est récupéré
@@ -47,16 +33,10 @@ public class GestionFichier {
 	 * @param titre,localisation
 	 * @throws SQLException
 	 * @throws ClassNotFoundException
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	public void addOuvrage(Ouvrage ouvrage, String localisation)
 			throws ClassNotFoundException, SQLException, IOException {
-
-		/*
-		 * TODO Reccupérer le fichier à l'aide de localisation Ajouter dans la Base de
-		 * donnée un ouuvrage à l'aide du nom du dossier trouvé (avec titre) Ajouter les
-		 * pages du dossier dans la BD
-		 */
 
 		// Création de l'ouvrage dans le répertoire
 		int counterFichier = 0;
@@ -90,7 +70,7 @@ public class GestionFichier {
 		File folder = new File(REPERTOIRE + titre);
 
 		for (File image : folder.listFiles()) {
-			connectionBD.ajoutPage(image, counterImage, ouvrage);
+			connectionBD.addPage(image, counterImage, ouvrage);
 			counterImage++;
 		}
 	}
@@ -117,34 +97,38 @@ public class GestionFichier {
 	 * @param ouvrage,numPage,page
 	 * @throws SQLException
 	 * @throws ClassNotFoundException
+	 * @throws IOException
 	 */
-	public void addPage(Ouvrage ouvrage, int numPage, Image page, String cc)
-			throws ClassNotFoundException, SQLException {
-
-		ConnectionBD BD = new ConnectionBD();
-		Connection conn = BD.getConnection();
-		Statement stmt = conn.createStatement();
-		String sql = "INSERT INTO pages VALUES (" + numPage + ", " + cc + ", " + ouvrage.getTitre() + ")";
-
-		int rs = stmt.executeUpdate(sql);
-
+	public void addPage(Ouvrage ouvrage, int numPage, File page)
+			throws ClassNotFoundException, SQLException, IOException {
+		ConnectionBD connectionBD = new ConnectionBD();
+		Path repertoire = Paths.get(REPERTOIRE + ouvrage.getTitre());
+		Path sourcePath = page.toPath();
+		Files.copy(sourcePath, repertoire);
+		connectionBD.addPage(page, numPage, ouvrage);
 	}
 
 	/**
 	 * Cette méthode supprime une page d'un ouvrage dans le répertoire local et dans
 	 * la base de donnée.
 	 * 
-	 * @param titre ,nbPage
+	 * @param titre,numPage
 	 * @throws SQLException
 	 * @throws ClassNotFoundException
 	 */
-	public void removePage(String titre, int nbPage) throws ClassNotFoundException, SQLException {
+	public void removePage(String titre, int numPage) throws ClassNotFoundException, SQLException {
+		File repertoire = new File(REPERTOIRE + titre);
+		ConnectionBD connectionBD = new ConnectionBD();
+		int counter = 1;
+		for (File image : repertoire.listFiles()) {
+			if (counter == numPage) {
+				connectionBD.deletePage(image);
+				image.deleteOnExit();
+			}
+			counter++;
+		}
+		
 
-		ConnectionBD BD = new ConnectionBD();
-		Connection conn = BD.getConnection();
-		Statement stmt = conn.createStatement();
-		String sql = "DELETE FROM pages WHERE titreouvrage=" + titre + "";
-		int rs = stmt.executeUpdate(sql);
 	}
 
 	/**

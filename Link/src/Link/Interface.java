@@ -1,5 +1,6 @@
 package Link;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
@@ -19,6 +20,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TreeTableColumn;
@@ -33,6 +35,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 import javafx.event.EventHandler;
 import javafx.scene.control.Label;
@@ -41,6 +44,7 @@ import javafx.scene.control.SpinnerValueFactory;
 
 public class Interface extends Application {
 
+	
 	public static void main(String[] args) {
 
 		Application.launch(args);
@@ -71,6 +75,9 @@ public class Interface extends Application {
 		System.setErr(ps);
 		Scene app = new Scene(ta);
 		hbox.getChildren().addAll(ta);
+		
+
+
 
 		for (char c : "Bienvenue dans notre projet".toCharArray()) {
 			console.write(c);
@@ -102,9 +109,9 @@ public class Interface extends Application {
 		Tableau.getColumns().addAll(Titre, Auteur, NbreMots);
 
 		// Informations
-		Ouvrage un = new Ouvrage("Le petit Prince", "Antoine", "de Saint Exuperry", null, 25000);
-		Ouvrage deux = new Ouvrage("L'Avare", "Moli�re", " ", null, 40000);
-		Ouvrage trois = new Ouvrage("Le Rouge et le Noir", "Stendhal", " ", null, 132456);
+		Ouvrage un = new Ouvrage("Le petit Prince", "Antoine", "de Saint Exuperry", null);
+		Ouvrage deux = new Ouvrage("L'Avare", "Moli�re", " ", null);
+		Ouvrage trois = new Ouvrage("Le Rouge et le Noir", "Stendhal", " ", null);
 
 		// Root Item
 
@@ -143,69 +150,72 @@ public class Interface extends Application {
 			public void handle(ActionEvent event) {
 				AnchorPane root = new AnchorPane();
 
-				TextField t2 = new TextField();
-				TextField t3 = new TextField();
-				TextField t4 = new TextField("YYYY-MM-DD");
-				Spinner<Double> t5 = new Spinner<Double>();
-				t5.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(1, 300, 0));
+				TextField champ1 = new TextField();
+				TextField champ2 = new TextField();
+				TextField champ3 = new TextField("YYYY-MM-DD");
 
-				Label l2 = new Label("Titre");
-				Label l3 = new Label("Auteur");
-				Label l4 = new Label("Date");
-				Label l5 = new Label("Nombre de pages");
+				Label text1 = new Label("Titre");
+				Label text2 = new Label("Auteur");
+				Label text3 = new Label("Date");
+				Label text4 = new Label("Localisation");
+				Label resultatLocalisationLabel = new Label("Chemin");
 
-				String titre = t2.getText();
-				String auteur = t3.getText();
-				String date = t4.getText();
-				Double nbPage = t5.getValue();
+				String titre = champ1.getText();
+				String auteur = champ2.getText();
+				String date = champ3.getText();
 
-				Button button4 = new Button("Ajouter l'ouvrage");
-				
+				Button boutonAjouter = new Button("Ajouter l'ouvrage");
+				Button boutonChemin = new Button("Parcourir ...");
 
 				// (Titre) Anchor to the Top + Left + Right
-				AnchorPane.setTopAnchor(t2, 50.0);
-				AnchorPane.setLeftAnchor(t2, 140.0);
-				AnchorPane.setRightAnchor(t2, 260.0);
+				AnchorPane.setTopAnchor(champ1, 30.0);
+				AnchorPane.setLeftAnchor(champ1, 140.0);
+				AnchorPane.setRightAnchor(champ1, 260.0);
 
-				AnchorPane.setTopAnchor(l2, 52.0);
-				AnchorPane.setLeftAnchor(l2, 30.0);
-				AnchorPane.setRightAnchor(l2, 320.0);
+				AnchorPane.setTopAnchor(text1, 32.0);
+				AnchorPane.setLeftAnchor(text1, 30.0);
+				AnchorPane.setRightAnchor(text1, 320.0);
 
 				// (Auteur) Anchor to the Top + Left + Right
-				AnchorPane.setTopAnchor(t3, 80.0);
-				AnchorPane.setLeftAnchor(t3, 140.0);
-				AnchorPane.setRightAnchor(t3, 260.0);
+				AnchorPane.setTopAnchor(champ2, 60.0);
+				AnchorPane.setLeftAnchor(champ2, 140.0);
+				AnchorPane.setRightAnchor(champ2, 260.0);
 
-				AnchorPane.setTopAnchor(l3, 82.0);
-				AnchorPane.setLeftAnchor(l3, 30.0);
-				AnchorPane.setRightAnchor(l3, 320.0);
+				AnchorPane.setTopAnchor(text2, 62.0);
+				AnchorPane.setLeftAnchor(text2, 30.0);
+				AnchorPane.setRightAnchor(text2, 320.0);
 
 				// (Date) Anchor to the Top + Left + Right
-				AnchorPane.setTopAnchor(t4, 110.0);
-				AnchorPane.setLeftAnchor(t4, 140.0);
-				AnchorPane.setRightAnchor(t4, 260.0);
+				AnchorPane.setTopAnchor(champ3, 90.0);
+				AnchorPane.setLeftAnchor(champ3, 140.0);
+				AnchorPane.setRightAnchor(champ3, 260.0);
 
-				AnchorPane.setTopAnchor(l4, 112.0);
-				AnchorPane.setLeftAnchor(l4, 30.0);
-				AnchorPane.setRightAnchor(l4, 320.0);
+				AnchorPane.setTopAnchor(text3, 92.0);
+				AnchorPane.setLeftAnchor(text3, 30.0);
+				AnchorPane.setRightAnchor(text3, 320.0);
 
-				// (nbPage) Anchor to the Top + Left + Right
-				AnchorPane.setTopAnchor(t5, 140.0);
-				AnchorPane.setLeftAnchor(t5, 140.0);
-				AnchorPane.setRightAnchor(t5, 260.0);
+				// (boutonChemin) Anchor to the Top + Left + Right
+				AnchorPane.setTopAnchor(boutonChemin, 120.0);
+				AnchorPane.setLeftAnchor(boutonChemin, 140.0);
+				AnchorPane.setRightAnchor(boutonChemin, 260.0);
 
-				AnchorPane.setTopAnchor(l5, 142.0);
-				AnchorPane.setLeftAnchor(l5, 30.0);
-				AnchorPane.setRightAnchor(l5, 320.0);
+				AnchorPane.setTopAnchor(text4, 122.0);
+				AnchorPane.setLeftAnchor(text4, 30.0);
+				AnchorPane.setRightAnchor(text4, 320.0);
+
+				AnchorPane.setTopAnchor(resultatLocalisationLabel, 155.0);
+				AnchorPane.setLeftAnchor(resultatLocalisationLabel, 30.0);
+				AnchorPane.setRightAnchor(resultatLocalisationLabel, 50.0);
 
 				// (B4) Anchor to the four sides of AnchorPane
-				AnchorPane.setTopAnchor(button4, 180.0);
-				AnchorPane.setLeftAnchor(button4, 50.0);
-				AnchorPane.setRightAnchor(button4, 50.0);
-				AnchorPane.setBottomAnchor(button4, 45.0);
+				AnchorPane.setTopAnchor(boutonAjouter, 200.0);
+				AnchorPane.setLeftAnchor(boutonAjouter, 50.0);
+				AnchorPane.setRightAnchor(boutonAjouter, 50.0);
+				AnchorPane.setBottomAnchor(boutonAjouter, 45.0);
 
 				// Add buttons to AnchorPane
-				root.getChildren().addAll(t2, t3, t4, t5, l2, l3, l4, l5, button4);
+				root.getChildren().addAll(champ1, champ2, champ3, boutonChemin, text1, text2, text3, text4,
+						resultatLocalisationLabel, boutonAjouter);
 				Scene secondScene = new Scene(root, 500, 400);
 
 				// New window (Stage)
@@ -218,29 +228,44 @@ public class Interface extends Application {
 				newWindow.setY(stage.getY() + 100);
 
 				newWindow.show();
-				button4.setOnAction(new EventHandler<ActionEvent>() {
+				boutonChemin.setOnAction((event3) -> {
+					DirectoryChooser directoryChooser = new DirectoryChooser();
+					File dossier = directoryChooser.showDialog(new Stage());
+					if (dossier != null) {
+						resultatLocalisationLabel.setText(dossier.getPath());
+					} else {
+						Alert alert = new Alert(AlertType.ERROR);
+						alert.setContentText("Erreur lié au dossier (peut-etre vide)");
+						alert.show();
+					}
+				});
 
-					@Override
-					public void handle(ActionEvent event2) {
-						Ouvrage ouvrage = new Ouvrage(titre, auteur, date, null, nbPage.intValue());
-						System.out.println("!!!");
-						try {
-							ConnectionBD connectionBD = new ConnectionBD();
-							connectionBD.createOuvrage(ouvrage);
-							if (connectionBD.exist(ouvrage)) {
-								Alert alert = new Alert(AlertType.INFORMATION);
-								alert.setTitle("Ajout d'ouvrage");
-								alert.setHeaderText(ouvrage.getTitre());
-								alert.setContentText("L'ouvrage a bien été ajouté à la base de donnée !");
-								alert.show();
-							}
-						} catch (ClassNotFoundException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						} catch (SQLException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
+				boutonAjouter.setOnAction((event2) -> {
+					File dossier = new File(resultatLocalisationLabel.getText());
+					int nbPage = dossier.list().length;
+					Ouvrage ouvrage = new Ouvrage(titre, auteur, date, null);
+					GestionFichier gestionFichier = new GestionFichier();
+					
+					try {
+						gestionFichier.addOuvrage(ouvrage, resultatLocalisationLabel.getText());
+						ConnectionBD connectionBD = new ConnectionBD();
+
+						if (connectionBD.exist(ouvrage)) {
+							Alert alert = new Alert(AlertType.INFORMATION);
+							alert.setTitle("Ajout d'ouvrage");
+							alert.setHeaderText("TEST");
+							alert.setContentText("L'ouvrage a bien été ajouté à la base de donnée !");
+							alert.show();
+						}else {
+							Alert alert = new Alert(AlertType.ERROR);
+							alert.setContentText("Erreur: l'ouvrage n'a pas été ajouter dans la base de donnée.");
+							alert.show();
 						}
+
+					} catch (ClassNotFoundException | SQLException | IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+
 					}
 				});
 

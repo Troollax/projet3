@@ -15,6 +15,8 @@ import java.util.ArrayList;
 
 import com.mysql.cj.result.BinaryStreamValueFactory;
 
+import ij.plugin.RGBStackMerge;
+
 /**
  * @author Belkalai Mohamed, Bigot Loic, Louison Boutet Cette classe s'occupera
  *         des interactions avec la base de donnée. Elle contient en attribut :
@@ -47,7 +49,7 @@ public class ConnectionBD {
 		System.out.println("Debut du test ! \n");
 		ConnectionBD BD = new ConnectionBD();
 		System.out.println("Connection réussi ! \n");
-		Ouvrage ou = new Ouvrage("Labelle", "bodelaire", "2021-12-24", null, 5);
+		Ouvrage ou = new Ouvrage("Labelle", "bodelaire", "2021-12-24", null);
 		System.out.println("Création de l'ouvrage. \n");
 		BD.createOuvrage(ou);
 		System.out.println("L'ouvrage existe : " + BD.exist(ou) + ".\n");
@@ -142,7 +144,7 @@ public class ConnectionBD {
 	public void updateOuvrage(Ouvrage ouvrage) throws SQLException {
 		if (exist(ouvrage)) {
 			Statement statement = connection.createStatement();
-			String sql = "UPDATE `ouvrage` SET `NbPages`=" + ouvrage.getNbPage() + ",`DateDeParution`="
+			String sql = "UPDATE `ouvrage` SET `DateDeParution`="
 					+ ouvrage.getDate() + ",`Auteur`" + ouvrage.getAuteur() + " WHERE Titre LIKE '" + ouvrage.getTitre()
 					+ "'";
 			statement.executeUpdate(sql);
@@ -165,8 +167,8 @@ public class ConnectionBD {
 		if (exist(ouvrage)) {
 			System.out.println("L'ouvrage existe déjà dans la Base.");
 		} else {
-			String sql = "INSERT INTO `test`.`ouvrage` (`Titre`, `NbPages`, `DateDeParution`, `Auteur`) VALUES (" + " '"
-					+ ouvrage.getTitre() + "', '" + ouvrage.getNbPage() + "', '" + ouvrage.getDate() + "', '"
+			String sql = "INSERT INTO `test`.`ouvrage` (`Titre`, `DateDeParution`, `Auteur`) VALUES (" + " '"
+					+ ouvrage.getTitre() + "', '" + ouvrage.getDate() + "', '"
 					+ ouvrage.getAuteur() + "');";
 			statement.executeUpdate(sql);
 
@@ -190,16 +192,16 @@ public class ConnectionBD {
 	}
 
 	/**
-	 * Cette méthode ajoute une page d'un ouvrage dans la BDD. Cette méthode sera
+	 * Cette méthode ajoute une page d'un ouvrage dans la base de donnée. Cette méthode sera
 	 * appeler autant de fois que nécessaire lors de la création ou l'édition d'un
 	 * ouvrage.
 	 * 
-	 * @param page,ouvrage
+	 * @param page,numPage,ouvrage
 	 * @throws SQLException
 	 * @throws IOException
 	 * 
 	 */
-	public void ajoutPage(File page, int numPage, Ouvrage ouvrage) throws SQLException, IOException {
+	public void addPage(File page, int numPage, Ouvrage ouvrage) throws SQLException, IOException {
 		// Ajout de la page dans la BDD
 		FileInputStream image = new FileInputStream(page);
 		String sqlAjout = "INSERT INTO `pages`(`Id_Pages`, `NumPages`, `ImgPages`) " + "VALUES ("
@@ -212,6 +214,17 @@ public class ConnectionBD {
 		String sqlLien = "INSERT INTO `a`(`Id_Ouvrage`,`Id_Pages`) "
 				+ "VALUES ((SELECT Id_Ouvrage FROM `ouvrage` WHERE titre LIKE '" + ouvrage.getTitre() + "') ," + " `"
 				+ page.getAbsolutePath() + "` )";
+	}
+	
+	/**
+	 * Cette méthode supprime une page d'un ouvrage dans la base de donnée.
+	 * @param File
+	 * @throws SQLException 
+	 **/
+	public void deletePage(File image) throws SQLException {
+		String sql = "DELETE FROM page WHERE Id_Page LIKE '%"+image.getAbsolutePath()+"%'";
+		Statement statement = connection.createStatement();
+		statement.executeUpdate(sql);
 	}
 
 	/**
